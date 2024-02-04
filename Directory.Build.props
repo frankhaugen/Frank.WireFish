@@ -1,0 +1,38 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>portable</DebugType>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+        <Authors>Frank R. Haugen</Authors>
+        <PublisherName>Frank R. Haugen</PublisherName>
+        <Copyright>Copyright (c) 2024 Frank R. Haugen</Copyright>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://www.github.com/frankhaugen/Frank.WireFish</PackageProjectUrl>
+
+        <RepositoryUrl>https://www.github.com/frankhaugen/Frank.WireFish</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+        <None Include="../README.md" Pack="true" PackagePath="\" Condition="!Exists('README.md')"/>
+        <None Include="README.md" Pack="true" PackagePath="\" Condition="Exists('README.md')"/>
+        <None Include="../icon.png" Pack="true" PackagePath="\" Condition="!Exists('icon.png')"/>
+        <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
+        <InternalsVisibleTo Include="$(SolutionName).Tests"/>
+        <InternalsVisibleTo Include="LINQPadQuery"/>
+    </ItemGroup>
+</Project>
