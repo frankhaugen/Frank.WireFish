@@ -13,4 +13,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Frank.WireFish\Frank.WireFish.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="app.manifest" LogicalName="app.manifest" />
+    </ItemGroup>
 </Project>
