@@ -5,6 +5,7 @@
 
     <ItemGroup>
       <PackageReference Include="Frank.Channels.DependencyInjection" Version="1.1.0" />
+      <PackageReference Include="Frank.DataStorage.Abstractions" Version="1.2.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
       <PackageReference Include="SharpPcap" Version="6.2.5" />

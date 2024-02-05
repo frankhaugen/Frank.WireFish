@@ -1,22 +1,68 @@
+using System.Text;
 using PacketDotNet;
-using SharpPcap;
 
 namespace Frank.WireFish;
 
 public static class PacketDataFormatter
 {
-    public static string Format(RawCapture capture)
+    public static string Format(EthernetPacket capture, char delimiter = '\t')
     {
-        var packet = Packet.ParsePacket(capture.LinkLayerType, capture.Data);
-        if (packet is EthernetPacket ethernetPacket)
+        var cells = new List<string?>
         {
-            return Format(ethernetPacket);
-        }
-        return packet.ToString();
+            capture.SourceHardwareAddress?.ToString(),
+            capture.DestinationHardwareAddress?.ToString(),
+            Encoding.UTF8.GetString(capture.PayloadData ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
     }
-
-    private static string Format(EthernetPacket ethernetPacket)
+    
+    public static string Format(IPPacket capture, char delimiter = '\t')
     {
-        return $"Ethernet: {ethernetPacket.SourceHardwareAddress} -> {ethernetPacket.DestinationHardwareAddress} {ethernetPacket.PayloadPacket}";
+        var cells = new List<string?>
+        {
+            capture.SourceAddress?.ToString(),
+            capture.DestinationAddress?.ToString(),
+            Encoding.UTF8.GetString(capture.PayloadData ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
     }
+    
+    public static string Format(TcpPacket capture, char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            capture.SourcePort.ToString(),
+            capture.DestinationPort.ToString(),
+            Encoding.UTF8.GetString(capture.PayloadData ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
+    
+    public static string Format(UdpPacket capture, char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            capture.SourcePort.ToString(),
+            capture.DestinationPort.ToString(),
+            Encoding.UTF8.GetString(capture.PayloadData ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
+    
+    public static string Format(InternetPacket capture, char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            string.Empty,
+            string.Empty,
+            Encoding.UTF8.GetString(Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
+    
 }
