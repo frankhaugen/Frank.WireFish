@@ -12,10 +12,12 @@ public static class ServiceCollectionExtensions
         services.AddChannel<CaptureWrapper>();
         services.AddChannel<CapturedInboundPacket>();
         services.AddChannel<CapturedOutboundPacket>();
+        services.AddChannel<Tuple<FileInfo, string>>();
         
         services.AddHostedService<CaptureDataConsumer>();
         services.AddHostedService<InboundPacketProcessor>();
         services.AddHostedService<OutboundPacketProcessor>();
+        services.AddHostedService<FileWriter>();
         
         return services;
     }

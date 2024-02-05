@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using Microsoft.Extensions.Logging;
+using PacketDotNet;
 using SharpPcap;
 
 namespace Frank.WireFish;
@@ -12,7 +13,7 @@ public class PacketCaptureService(ILogger<PacketCaptureService> logger, ChannelW
     {
         foreach (var device in _devices)
         {
-            logger.LogInformation("Starting packet capture service on device {Device}", device.Description); 
+            logger.LogDebug("Starting packet capture service on device {Device}", device.Description); 
             device.OnPacketArrival += OnPacketArrival;
         
             device.Open(DeviceModes.Promiscuous); 
@@ -23,13 +24,25 @@ public class PacketCaptureService(ILogger<PacketCaptureService> logger, ChannelW
 
     private void OnPacketArrival(object sender, PacketCapture e)
     {
-        logger.LogInformation("Packet arrived");
+        logger.LogDebug("Packet arrived");
         var capture = new CaptureWrapper
         {
+            DeviceName = e.Device.Description,
             Capture = e.GetPacket(),
             Device = e.Device,
             Header = e.Header
         };
+        
+        if (e.GetPacket().LinkLayerType == LinkLayers.Ethernet)
+        {
+            var ethernetPacket = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data) as EthernetPacket;
+            if (ethernetPacket != null)
+            {
+                logger.LogDebug("Ethernet packet arrived");
+                capture.Inbound = ethernetPacket.DestinationHardwareAddress.ToString() == "00:00:00:00:00:00";
+            }
+        }
+        
         writer.WriteAsync(capture).GetAwaiter().GetResult();
     }
 
@@ -37,7 +50,7 @@ public class PacketCaptureService(ILogger<PacketCaptureService> logger, ChannelW
     {
         foreach (var device in _devices)
         {
-            logger.LogInformation("Stopping packet capture service on device {Device}", device.Description);
+            logger.LogDebug("Stopping packet capture service on device {Device}", device.Description);
             device.StopCapture();
             device.Close();
         }
