@@ -1,34 +1,38 @@
-using System.Threading.Channels;
+using System.Net;
+using System.Net.Sockets;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PacketDotNet;
+using Microsoft.Extensions.Options;
 using SharpPcap;
 
 namespace Frank.WireFish;
 
-public class PacketCaptureService(ILogger<PacketCaptureService> logger, ChannelWriter<RawCapture> writer) : IPacketCaptureService
+public class PacketCaptureService(IOptions<PacketCaptureSettings> options, ILogger<PacketCaptureService> logger, IPacketHandler packetHandler) : IHostedService
 {
     private readonly CaptureDeviceList _devices = CaptureDeviceList.Instance;
     
-    public Task StartAsync()
+
+    /// <inheritdoc />
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         foreach (var device in _devices)
         {
-            logger.LogDebug("Starting packet capture service on device {Device}", device.Description); 
-            device.OnPacketArrival += OnPacketArrival;
-        
-            device.Open(DeviceModes.Promiscuous); 
+            // Open the device for capturing
+            device.Open(DeviceModes.Promiscuous);
+
+            // Set a filter to capture only TCP packets
+            device.Filter = options.Value.Filter;
+            
+            // Start capturing packets
+            device.OnPacketArrival += packetHandler.HandlePacket;
             device.StartCapture();
         }
-        return Task.CompletedTask;
+        
+        await Task.CompletedTask;
     }
 
-    private void OnPacketArrival(object sender, PacketCapture e)
-    {
-        logger.LogDebug("Packet arrived");
-        writer.WriteAsync(e.GetPacket()).GetAwaiter().GetResult();
-    }
-
-    public Task StopAsync()
+    /// <inheritdoc />
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         foreach (var device in _devices)
         {
@@ -36,21 +40,6 @@ public class PacketCaptureService(ILogger<PacketCaptureService> logger, ChannelW
             device.StopCapture();
             device.Close();
         }
-        return Task.CompletedTask;
-    }
-
-    public ValueTask DisposeAsync()
-    {
-        foreach (var device in _devices)
-        {
-            device.OnPacketArrival -= OnPacketArrival;
-            device.Dispose();
-        }
-        return new ValueTask();
-    }
-
-    public void Dispose()
-    {
-        DisposeAsync().GetAwaiter().GetResult();
+        await Task.CompletedTask;
     }
 }

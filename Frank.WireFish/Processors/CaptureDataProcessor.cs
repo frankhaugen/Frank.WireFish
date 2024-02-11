@@ -4,31 +4,34 @@ using Microsoft.Extensions.Logging;
 using PacketDotNet;
 using SharpPcap;
 
-namespace Frank.WireFish;
+namespace Frank.WireFish.Processors;
 
-public class CaptureDataConsumer(
-    ILogger<CaptureDataConsumer> logger, 
+public class CaptureDataProcessor(
+    ILogger<CaptureDataProcessor> logger, 
     ChannelReader<RawCapture> reader, 
     ChannelWriter<EthernetPacket> ethernetPacketWriter,
     ChannelWriter<IPPacket> ipPacketWriter,
     ChannelWriter<TcpPacket> tcpPacketWriter,
     ChannelWriter<UdpPacket> udpPacketWriter,
     ChannelWriter<InternetPacket> internetPacketWriter,
-    ChannelWriter<Ieee8021QPacket> ieee8021QPacketWriter
-    ) : BackgroundService
+    ChannelWriter<Ieee8021QPacket> ieee8021QPacketWriter,
+    ChannelWriter<Packet> packetWriter,
+    ChannelWriter<NullPacket> nullPacketWriter,
+    ChannelWriter<Tuple<FileInfo, string>> fileInfoWriter
+        ) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await foreach (var item in reader.ReadAllAsync(stoppingToken))
         {
-            // Switch on the packet type as cast
-            switch (item.GetPacket())
+            Packet packet = item.GetPacket();
+            switch (packet)
             {
-                case Ieee8021QPacket ieee8021QPacket:
-                    await ieee8021QPacketWriter.WriteAsync(ieee8021QPacket, stoppingToken);
+                case TcpPacket tcpPacket:
+                    await tcpPacketWriter.WriteAsync(tcpPacket, stoppingToken);
                     break;
-                case EthernetPacket ethernetPacket:
-                    await ethernetPacketWriter.WriteAsync(ethernetPacket, stoppingToken);
+                case UdpPacket udpPacket:
+                    await udpPacketWriter.WriteAsync(udpPacket, stoppingToken);
                     break;
                 case IPv4Packet ipv4Packet:
                     await ipPacketWriter.WriteAsync(ipv4Packet, stoppingToken);
@@ -39,17 +42,20 @@ public class CaptureDataConsumer(
                 case IPPacket ipPacket:
                     await ipPacketWriter.WriteAsync(ipPacket, stoppingToken);
                     break;
-                case TcpPacket tcpPacket:
-                    await tcpPacketWriter.WriteAsync(tcpPacket, stoppingToken);
-                    break;
-                case UdpPacket udpPacket:
-                    await udpPacketWriter.WriteAsync(udpPacket, stoppingToken);
+                case Ieee8021QPacket ieee8021QPacket:
+                    await ieee8021QPacketWriter.WriteAsync(ieee8021QPacket, stoppingToken);
                     break;
                 case InternetPacket internetPacket:
                     await internetPacketWriter.WriteAsync(internetPacket, stoppingToken);
                     break;
+                case EthernetPacket ethernetPacket:
+                    await ethernetPacketWriter.WriteAsync(ethernetPacket, stoppingToken);
+                    break;
+                case NullPacket nullPacket:
+                    await nullPacketWriter.WriteAsync(nullPacket, stoppingToken);
+                    break;
                 default:
-                    logger.LogWarning("Unhandled packet type {PacketType}", item.GetPacket().ToString(StringOutputType.Normal));
+                    await packetWriter.WriteAsync(packet, stoppingToken);
                     break;
             }
         }

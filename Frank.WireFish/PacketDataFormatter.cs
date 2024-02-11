@@ -1,5 +1,6 @@
 using System.Text;
 using PacketDotNet;
+using SharpPcap;
 
 namespace Frank.WireFish;
 
@@ -65,4 +66,40 @@ public static class PacketDataFormatter
         return string.Join(delimiter, cells);
     }
     
+    public static string Format(Ieee8021QPacket capture, char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            string.Empty,
+            string.Empty,
+            Encoding.UTF8.GetString(Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
+    
+    public static string Format(RawCapture capture, char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            capture.GetType().Name,
+            capture.Timeval.Date.ToString("s"),
+            capture.PacketLength.ToString(),
+            Encoding.UTF8.GetString(capture.Data ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
+
+    public static string Format(Packet capture , char delimiter = '\t')
+    {
+        var cells = new List<string>
+        {
+            capture.GetType().Name,
+            capture.Bytes.Length.ToString(),
+            Encoding.UTF8.GetString(capture.Bytes ?? Array.Empty<byte>())
+        };
+        
+        return string.Join(delimiter, cells);
+    }
 }

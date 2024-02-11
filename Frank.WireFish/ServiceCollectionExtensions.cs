@@ -1,4 +1,5 @@
 ﻿using Frank.Channels.DependencyInjection;
+using Frank.WireFish.Processors;
 using Microsoft.Extensions.DependencyInjection;
 using PacketDotNet;
 using SharpPcap;
@@ -9,7 +10,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPacketCaptureService(this IServiceCollection services)
     {
-        services.AddSingleton<IPacketCaptureService, PacketCaptureService>();
+        services.AddHostedService<PacketCaptureService>();
+        services.AddChannel<CapturedTcpPacket>();
+        services.AddSingleton<IPacketHandler, PacketHandler>();
 
         services.AddChannel<RawCapture>();
         services.AddChannel<IPPacket>();
@@ -18,17 +21,23 @@ public static class ServiceCollectionExtensions
         services.AddChannel<UdpPacket>();
         services.AddChannel<InternetPacket>();
         services.AddChannel<Ieee8021QPacket>();
+        services.AddChannel<Packet>();
+        services.AddChannel<NullPacket>();
         services.AddChannel<Tuple<FileInfo, string>>();
+
+        services.AddHostedService<FileWriter>();
         
-        services.AddHostedService<CaptureDataConsumer>();
+        services.AddHostedService<CaptureDataProcessor>();
         services.AddHostedService<EthernetPacketProcessor>();
         services.AddHostedService<Ieee8021QPacketProcessor>();
         services.AddHostedService<IPPacketProcessor>();
         services.AddHostedService<TcpPacketProcessor>();
         services.AddHostedService<UdpPacketProcessor>();
         services.AddHostedService<InternetPacketProcessor>();
-        services.AddHostedService<FileWriter>();
-        
+        services.AddHostedService<PacketProcessor>();
+        services.AddHostedService<NullPacketProcessor>();
+
+
         return services;
     }
 }

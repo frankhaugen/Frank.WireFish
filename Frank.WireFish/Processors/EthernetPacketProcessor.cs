@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PacketDotNet;
 
-namespace Frank.WireFish;
+namespace Frank.WireFish.Processors;
 
 public class EthernetPacketProcessor(ILogger<EthernetPacketProcessor> logger, ChannelReader<EthernetPacket> reader, ChannelWriter<Tuple<FileInfo, string>> writer)
     : BackgroundService
