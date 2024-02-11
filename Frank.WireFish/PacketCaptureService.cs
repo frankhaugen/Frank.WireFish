@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using Frank.WireFish.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,7 +29,6 @@ public class PacketCaptureService(IOptions<PacketCaptureSettings> options, ILogg
             device.StartCapture();
         }
         
-        await Task.CompletedTask;
     }
 
     /// <inheritdoc />

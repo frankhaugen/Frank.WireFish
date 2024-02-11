@@ -1,18 +1,22 @@
 using System.Text;
 using System.Threading.Channels;
+using Frank.WireFish.Models;
 using Microsoft.Extensions.Hosting;
 
 namespace Frank.WireFish;
 
-public class FileWriter(ChannelReader<Tuple<FileInfo, string>> reader) : BackgroundService
+public class FileWriter(ChannelReader<FileWriteRequest> reader) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await foreach (var item in reader.ReadAllAsync(stoppingToken))
+        await foreach (FileWriteRequest item in reader.ReadAllAsync(stoppingToken))
         {
-            if (!item.Item1.Directory!.Exists) item.Item1.Directory.Create();
-            if (!item.Item1.Exists) await item.Item1.Create().DisposeAsync();
-            await File.AppendAllTextAsync(item.Item1.FullName, item.Item2 + "\n", Encoding.UTF8, stoppingToken);
+            if (!item.FileInfo.Directory!.Exists) item.FileInfo.Directory.Create();
+            if (!item.FileInfo.Exists) await item.FileInfo.Create().DisposeAsync();
+            if (item.Append)
+                await File.AppendAllTextAsync(item.FileInfo.FullName, item.Content + "\n", Encoding.UTF8, stoppingToken);
+            else
+                await File.WriteAllTextAsync(item.FileInfo.FullName, item.Content + "\n", Encoding.UTF8, stoppingToken);
         }
     }
 }

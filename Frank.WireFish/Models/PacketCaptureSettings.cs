@@ -1,4 +1,4 @@
-﻿namespace Frank.WireFish;
+﻿namespace Frank.WireFish.Models;
 
 public class PacketCaptureSettings
 {
