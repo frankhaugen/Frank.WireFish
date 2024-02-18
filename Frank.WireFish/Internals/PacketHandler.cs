@@ -1,11 +1,12 @@
 ﻿using System.Threading.Channels;
-using Frank.WireFish.Models;
+
 using PacketDotNet;
+
 using SharpPcap;
 
-namespace Frank.WireFish.Handlers;
+namespace Frank.WireFish.Internals;
 
-public class PacketHandler(ChannelWriter<DevicePacket> writer) : IPacketHandler
+internal class PacketHandler(ChannelWriter<DevicePacket> writer)
 {
     public void HandlePacket(object sender, PacketCapture e)
     {

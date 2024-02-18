@@ -1,37 +1,26 @@
 ﻿using Frank.Channels.DependencyInjection;
-using Frank.WireFish.Handlers;
-using Frank.WireFish.Models;
+using Frank.WireFish.Internals;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Frank.WireFish;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddPacketCaptureService(this IServiceCollection services)
+    public static IServiceCollection AddWireFish(this IServiceCollection services, Action<IWireFishBuilder> wireFishBuilder)
     {
-        // Channels
+        services.AddPacketCaptureService();
+        var builder = new WireFishBuilder(services);
+        wireFishBuilder(builder);
+        return services;
+    }
+    
+    internal static IServiceCollection AddPacketCaptureService(this IServiceCollection services)
+    {
         services.AddChannel<DevicePacket>();
-        services.AddChannel<IrcDevicePacket>();
-        services.AddChannel<IrcPacket>();
-
-        // Initial packet capture service
         services.AddHostedService<PacketCaptureService>();
-        
-        // Handler of initial packet captures from the packet capture service
-        services.AddSingleton<IPacketHandler, PacketHandler>();
-
-        // Device packet handler, that handles the packets after some processing
+        services.AddSingleton<PacketHandler>();
         services.AddHostedService<DevicePacketHandler>();
-        
-        // IRC packet handler, that handles the packets that are IRC related
-        services.AddHostedService<IrcDevicePacketHandler>();
-        
-        // IRC packet handler, that handles the packets that are IRC related
-        services.AddHostedService<IrcPacketHandler>();
-        
-        // File writer, that writes the packets to a file
-        services.AddHostedService<FileWriter>();
-
         return services;
     }
 }

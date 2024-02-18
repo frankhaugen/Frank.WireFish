@@ -1,11 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Description>
+            WireFish is a library for capturing network traffic. Its meant to be very simple and flexible. It is built on top of SharpPcap and Frank.Channels.DependencyInjection, intending to provide a simple and flexible way to capture network traffic. Then allow the user to process the packets in any way they see fit.
+            The intention is to only provide the capturing and then allow the user to register their own packet processors to do whatever they want with the packets. This came about because I needed to capture network traffic and WireShark is very unwieldy and I wanted to be able to process the packets in any way I wanted where as WireShark is very limited in what it can do.
+        </Description>
+        <PackageTags>network, capture, traffic, packet, capture, wirefish, sharp, pcap, frank, channels, dependency, injection</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Frank.Channels.DependencyInjection" Version="1.1.0" />
-      <PackageReference Include="Frank.DataStorage.Abstractions" Version="3.1.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
       <PackageReference Include="SharpPcap" Version="6.2.5" />

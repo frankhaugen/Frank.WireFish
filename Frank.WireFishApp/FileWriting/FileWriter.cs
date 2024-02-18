@@ -1,9 +1,7 @@
 using System.Text;
 using System.Threading.Channels;
-using Frank.WireFish.Models;
-using Microsoft.Extensions.Hosting;
 
-namespace Frank.WireFish;
+namespace Frank.WireFishApp.FileWriting;
 
 public class FileWriter(ChannelReader<FileWriteRequest> reader) : BackgroundService
 {
@@ -20,3 +18,4 @@ public class FileWriter(ChannelReader<FileWriteRequest> reader) : BackgroundServ
         }
     }
 }
+

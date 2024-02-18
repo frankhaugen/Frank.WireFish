@@ -1,11 +1,11 @@
-using Frank.WireFish.Handlers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 using SharpPcap;
 
-namespace Frank.WireFish;
+namespace Frank.WireFish.Internals;
 
-public class PacketCaptureService(ILogger<PacketCaptureService> logger, IPacketHandler packetHandler) : IHostedService
+internal class PacketCaptureService(ILogger<PacketCaptureService> logger, PacketHandler packetHandler) : IHostedService
 {
     private readonly CaptureDeviceList _devices = CaptureDeviceList.Instance;
 
