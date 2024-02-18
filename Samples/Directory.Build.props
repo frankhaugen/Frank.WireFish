@@ -1,0 +1,37 @@
+<Project>
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>portable</DebugType>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        
+        <Optimize>true</Optimize>
+        <trimmode>copy</trimmode>
+        <PublishTrimmed>true</PublishTrimmed>
+
+        <Authors>Frank R. Haugen</Authors>
+        <PublisherName>Frank R. Haugen</PublisherName>
+        <Copyright>Copyright (c) 2024 Frank R. Haugen</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+        <None Include="../../README.md" Pack="true" PackagePath="\" Condition="!Exists('README.md')"/>
+        <None Include="README.md" Pack="true" PackagePath="\" Condition="Exists('README.md')"/>
+        <None Include="../../icon.png" Pack="true" PackagePath="\" Condition="!Exists('icon.png')"/>
+        <EmbeddedResource Include="../app.manifest" Pack="true" PackagePath="\" Condition="!Exists('app.manifest')"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Frank.WireFish\Frank.WireFish.csproj" />
+    </ItemGroup>
+</Project>

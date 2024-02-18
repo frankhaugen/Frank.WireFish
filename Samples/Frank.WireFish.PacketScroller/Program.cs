@@ -1,7 +1,13 @@
+using Frank.WireFish;
 using Frank.WireFish.PacketScroller;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddWireFish(fishBuilder =>
+{
+    fishBuilder.AddPacketHandler<PacketCatogorizingHandler>();
+});
+
+builder.Services.AddSingleton<IPacketContainer, PacketContainer>();
 
 var host = builder.Build();
 host.Run();
