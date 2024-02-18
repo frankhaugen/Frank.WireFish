@@ -25,7 +25,8 @@ public class WirefishTests(ITestOutputHelper outputHelper) : HostApplicationTest
         return Task.CompletedTask;
     }
 
-    [Fact]
+    [Fact(Skip = "This is not a unit test, it's an integration test that requires a network connection")]
+    //[Fact]
     public async Task Test1()
     {
         var message = "Hello World";
