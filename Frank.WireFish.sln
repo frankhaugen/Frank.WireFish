@@ -2,8 +2,6 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.WireFishApp", "Frank.WireFishApp\Frank.WireFishApp.csproj", "{879A74D3-BD35-4325-919E-3790F7FA1282}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.WireFish", "Frank.WireFish\Frank.WireFish.csproj", "{228FD923-5B09-413C-ADFD-F09E3D038FF2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD0BC6BC-4EA7-4653-8792-AFDA7C184D84}"
@@ -19,6 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.WireFish.Tests", "Frank.WireFish.Tests\Frank.WireFish.Tests.csproj", "{D91A3E8A-EE4F-46B1-8217-7E44638BD8FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{97CA090E-15BB-42C4-BF26-0616E26A2E78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.WireFishApp", "Samples\Frank.WireFishApp\Frank.WireFishApp.csproj", "{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.WireFish.PacketScroller", "Samples\Frank.WireFish.PacketScroller\Frank.WireFish.PacketScroller.csproj", "{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +32,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{879A74D3-BD35-4325-919E-3790F7FA1282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{879A74D3-BD35-4325-919E-3790F7FA1282}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{879A74D3-BD35-4325-919E-3790F7FA1282}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{879A74D3-BD35-4325-919E-3790F7FA1282}.Release|Any CPU.Build.0 = Release|Any CPU
 		{228FD923-5B09-413C-ADFD-F09E3D038FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{228FD923-5B09-413C-ADFD-F09E3D038FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{228FD923-5B09-413C-ADFD-F09E3D038FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,5 +40,17 @@ Global
 		{D91A3E8A-EE4F-46B1-8217-7E44638BD8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D91A3E8A-EE4F-46B1-8217-7E44638BD8FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D91A3E8A-EE4F-46B1-8217-7E44638BD8FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BA16FFBD-8DC0-4A00-BB81-C495AD943B0B} = {97CA090E-15BB-42C4-BF26-0616E26A2E78}
+		{5CFBBBF8-A287-439F-86C6-64C92BBAD1BF} = {97CA090E-15BB-42C4-BF26-0616E26A2E78}
 	EndGlobalSection
 EndGlobal
