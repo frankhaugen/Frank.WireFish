@@ -1,6 +1,6 @@
 using SharpPcap;
 
-namespace Frank.WireFish;
+namespace Frank.WireFish.Handlers;
 
 public interface IPacketHandler
 {
