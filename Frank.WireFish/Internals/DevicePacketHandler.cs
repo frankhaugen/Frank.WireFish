@@ -8,13 +8,16 @@ internal class DevicePacketHandler(ChannelReader<DevicePacket> reader, IEnumerab
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await foreach (var packet in reader.ReadAllAsync(stoppingToken))
+        while (!stoppingToken.IsCancellationRequested) // Prevent the loop stopping until cancellation is requested
         {
-            foreach (var handler in handlers)
+            await foreach (var packet in reader.ReadAllAsync(stoppingToken))
             {
-                if (handler.CanHandle(packet))
+                foreach (var handler in handlers)
                 {
-                    await handler.HandleAsync(packet, stoppingToken);
+                    if (handler.CanHandle(packet))
+                    {
+                        await handler.HandleAsync(packet, stoppingToken);
+                    }
                 }
             }
         }
