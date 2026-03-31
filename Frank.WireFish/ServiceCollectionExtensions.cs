@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddChannel<DevicePacket>();
         services.AddHostedService<PacketCaptureService>();
         services.AddSingleton<PacketHandler>();
+        services.AddSingleton<InterfaceProvider>();
         services.AddHostedService<DevicePacketHandler>();
         return services;
     }

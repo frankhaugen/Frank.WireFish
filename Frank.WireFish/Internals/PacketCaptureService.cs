@@ -1,7 +1,10 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using PacketDotNet;
+
 using SharpPcap;
+using SharpPcap.LibPcap;
 
 namespace Frank.WireFish.Internals;
 
@@ -10,7 +13,7 @@ internal class PacketCaptureService(ILogger<PacketCaptureService> logger, Packet
     private readonly CaptureDeviceList _devices = CaptureDeviceList.Instance;
 
     /// <inheritdoc />
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         foreach (var device in _devices)
         {
@@ -18,11 +21,17 @@ internal class PacketCaptureService(ILogger<PacketCaptureService> logger, Packet
             device.Open(DeviceModes.Promiscuous);
             
             // Start capturing packets
-            device.OnPacketArrival += packetHandler.HandlePacket;
+            device.OnPacketArrival += DeviceOnOnPacketArrival;
             device.StartCapture();
         }
+    }
 
-        return Task.CompletedTask;
+    private void DeviceOnOnPacketArrival(object sender, PacketCapture e)
+    {
+        var device = (LibPcapLiveDevice)sender;
+        var rawPacket = e.GetPacket();
+        var packet = Packet.ParsePacket(rawPacket.LinkLayerType, rawPacket.Data);
+        packetHandler.HandlePacket(device, packet).GetAwaiter().GetResult();
     }
 
     /// <inheritdoc />

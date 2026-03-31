@@ -46,7 +46,7 @@ public class WirefishTests(ITestOutputHelper outputHelper) : HostApplicationTest
         await Task.Delay(1000);
         
         // Assert that the packet handler received the packet
-        var packetHandler = Services.GetRequiredService<IPacketHandler>() as TestPacketHandler;
+        var packetHandler = GetServices.GetRequiredService<IPacketHandler>() as TestPacketHandler;
         Assert.NotNull(packetHandler);
         Assert.Single(packetHandler.Packets);
         var packet = packetHandler.Packets.First();

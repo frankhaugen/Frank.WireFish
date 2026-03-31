@@ -1,9 +1,9 @@
 using PacketDotNet;
-using SharpPcap;
+using SharpPcap.LibPcap;
 
 namespace Frank.WireFish;
 
 /// <summary>
 /// Represents a device packet containing information about the captured packet.
 /// </summary>
-public record DevicePacket(ICaptureDevice Device, Packet Packet, DateTime Timestamp);
+public record DevicePacket(LibPcapLiveDevice Device, Packet Packet, DateTime Timestamp);

@@ -20,7 +20,7 @@ public static class DevicePacketExtensions
             return ipPacket.SourceAddress;
 
         var ipv6Packet = devicePacket.Packet.Extract<IPv6Packet>();
-        return ipv6Packet?.SourceAddress;
+        return ipv6Packet.SourceAddress;
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ public static class DevicePacketExtensions
             return ipPacket.DestinationAddress;
 
         var ipv6Packet = devicePacket.Packet.Extract<IPv6Packet>();
-        return ipv6Packet?.DestinationAddress;
+        return ipv6Packet.DestinationAddress;
     }
 
     /// <summary>
@@ -65,10 +65,9 @@ public static class DevicePacketExtensions
     /// <summary>
     /// Gets the protocol type of the packet (e.g., TCP, UDP).
     /// </summary>
-    public static string GetProtocol(this DevicePacket devicePacket)
+    public static ProtocolType GetProtocol(this DevicePacket devicePacket)
     {
-        var ipPacket = devicePacket.Packet.Extract<IPPacket>();
-        return ipPacket?.Protocol.ToString();
+        return devicePacket.Packet.Extract<IPPacket>().Protocol;
     }
 
     /// <summary>
@@ -101,8 +100,7 @@ public static class DevicePacketExtensions
     /// </summary>
     public static byte[]? GetPayloadData(this DevicePacket devicePacket)
     {
-        var ipPacket = devicePacket.Packet.Extract<IPPacket>();
-        return ipPacket?.PayloadData;
+        return devicePacket.Packet.Extract<IPPacket>().PayloadData;
     }
 
     /// <summary>
