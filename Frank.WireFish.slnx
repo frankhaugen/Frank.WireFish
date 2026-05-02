@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Samples/">
+    <File Path="Samples/app.manifest" />
+    <File Path="Samples/Directory.Build.props" />
+    <Project Path="Samples/Frank.WireFish.PacketScroller/Frank.WireFish.PacketScroller.csproj" />
+    <Project Path="Samples/Frank.WireFishApp/Frank.WireFishApp.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="icon.png" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Frank.WireFish.Tests/Frank.WireFish.Tests.csproj" />
+  <Project Path="Frank.WireFish/Frank.WireFish.csproj" />
+</Solution>
